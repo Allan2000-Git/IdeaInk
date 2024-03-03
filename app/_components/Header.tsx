@@ -1,15 +1,19 @@
+"use client"
+
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { FaArrowRightLong } from "react-icons/fa6";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
-import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-async function Header() {
-    const {getUser} = getKindeServerSession();
-    const userData = await getUser(); 
-    
-    console.log(userData);
+function Header() {
+    const { user } = useKindeBrowserClient();
+
+    // useEffect(() => {
+    //     console.log(user);
+        
+    // }, [user])
 
     return (
         <header className={`bg-black py-3 backdrop-sepia`}>
@@ -49,7 +53,7 @@ async function Header() {
 
                 <div className="flex items-center gap-4">
                     {
-                        userData ?
+                        user ?
                         (
                             <div className="sm:flex sm:gap-4">
                                 <LogoutLink
