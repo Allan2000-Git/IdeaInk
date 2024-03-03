@@ -1,8 +1,13 @@
+"use client"
+
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import Link from 'next/link'
 import React from 'react'
 import { FaArrowRightLong } from 'react-icons/fa6'
 
 function HeroSection() {
+    const {user} = useKindeBrowserClient();
+
     return (
         <section className="bg-black/100 text-white h-screen">
             <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
@@ -24,9 +29,9 @@ function HeroSection() {
                     <div className="mt-8 flex flex-wrap justify-center gap-4">
                         <Link
                         className="rounded-md bg-white px-5 py-2.5 text-sm font-medium text-black flex items-center gap-2 transition hover:bg-white/85"
-                        href="/"
+                        href={user ? '/dashboard' : '/'}
                         >
-                        Try IdeaInk 
+                        {user ? 'Visit Dashboard' : 'Try IdeaInk'}
                         <FaArrowRightLong />
                         </Link>
                     </div>

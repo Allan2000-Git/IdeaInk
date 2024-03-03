@@ -2,12 +2,11 @@
 
 import { api } from '@/convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
-import { useConvex, useMutation, useQuery } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
 import React, { useEffect } from 'react'
 
 function Dashboard() {
     const {user, isLoading}: any = useKindeBrowserClient();
-    const getUser = useQuery(api.user.getUser, {email: user?.email});
     const createUser = useMutation(api.user.createUser);
 
     const convex = useConvex();
@@ -27,7 +26,6 @@ function Dashboard() {
         if(user && !isLoading){
             checkIfUserExists();
         }
-        
     }, [user])
     
     return (
