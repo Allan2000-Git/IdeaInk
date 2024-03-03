@@ -76,11 +76,13 @@ function SideNav() {
     const [teams, setTeams] = useState<Team[]>([]);
     const [activeTeam, setActiveTeam] = useState<Team>();
     const [fileName, setFileName] = useState("");
+    const [files, setFiles] = useState<File[]>([]);
 
     const {user}:any = useKindeBrowserClient();
     const convex = useConvex();
     const createNewFile = useMutation(api.files.createFile);
 
+    // Get all the teams
     const getAllTeams = async () => {
         const data = await convex.query(api.teams.getTeams, {email: user?.email});
         setTeams(data);
@@ -93,6 +95,7 @@ function SideNav() {
         }
     },[user])
 
+    // Create New File
     const handleFileCreation = (fileName:string) => {
         createFile(fileName);   
     }
@@ -108,11 +111,24 @@ function SideNav() {
         })
         .then(res => {
             if(res){
+                getAllFiles();
                 toast(`A new ${fileName} file has been created.`);
             }
         })
         .catch(err => toast(`${err.message}`));
     }
+
+    // Get all files
+    const getAllFiles = async () => {
+        const data = await convex.query(api.files.getFiles, {teamId: activeTeam?._id});
+        setFiles(data);
+    }
+
+    useEffect(() => {
+        if(activeTeam){
+            getAllFiles();
+        }
+    },[activeTeam])
 
     return (
         <div className="w-[20%] h-screen fixed border-r-2 px-5 pt-14 pb-5 flex flex-col">
@@ -193,34 +209,47 @@ function SideNav() {
                         <DialogTrigger className="w-full" asChild>
                             <Button className="w-full bg-blue-500 hover:bg-blue-600 transition">New File</Button>
                         </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle className="text-[16px]">Create a New File</DialogTitle>
-                                <DialogDescription>
-                                    <Input value={fileName} onChange={e => setFileName(e.target.value)} type="text" className="text-black font-medium" placeholder="File name must be of minimum 3 characters" />
-                                </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter className="sm:justify-start">
-                                <DialogClose asChild>
-                                    <Button 
-                                    onClick={() => handleFileCreation(fileName)}
-                                    disabled={fileName.length < 3} 
-                                    type="button" 
-                                    className="bg-blue-500 hover:bg-blue-600 transition">
-                                        Create
-                                    </Button>
-                                </DialogClose>
-                            </DialogFooter>
-                        </DialogContent>
+                        {
+                            files.length < 5 ?
+                            (
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle className="text-[16px]">Create a New File</DialogTitle>
+                                        <DialogDescription>
+                                            <Input value={fileName} onChange={e => setFileName(e.target.value)} type="text" className="text-black font-medium" placeholder="File name must be of minimum 3 characters" />
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                    <DialogFooter className="sm:justify-start">
+                                        <DialogClose asChild>
+                                            <Button 
+                                            onClick={() => handleFileCreation(fileName)}
+                                            disabled={fileName.length < 3} 
+                                            type="button" 
+                                            className="bg-blue-500 hover:bg-blue-600 transition">
+                                                Create
+                                            </Button>
+                                        </DialogClose>
+                                    </DialogFooter>
+                                </DialogContent>
+                            ):(
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogDescription>
+                                            You have already generated 5 files. Please upgrade to use unlimited files.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            )
+                        }
                     </Dialog>
                 </div>
 
                 <div className="mt-7 text-sm">
                     <div className="w-full h-4 rounded-full bg-gray-200">
-                        <div className="w-[20%] h-4 bg-blue-500 rounded-full">
+                        <div style={{width: `${files.length / 5 * 100}%`}} className={`h-4 ${files.length >= 5 ? "bg-red-500" : "bg-blue-500"} rounded-full`}>
                         </div>
                     </div>
-                    <p className="my-2"><strong>1</strong> out of <strong>5</strong> files used.</p>
+                    <p className="my-2"><strong>{files.length}</strong> out of <strong>5</strong> files used.</p>
                     <p><span className="underline">Upgrade</span> your plan for unlimited access.</p>
                 </div>
             </div>

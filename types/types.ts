@@ -11,5 +11,16 @@ export type Team = {
     createdBy: string | null,
     teamName:string | null,
     _creationTime:number,
-    _id: string,
+    _id: any,
+}
+
+export type File = {
+    archive: boolean | null,
+    createdBy: string | null,
+    document: string | null,
+    fileName:string | null,
+    teamId:any,
+    whiteboard:string | null,
+    _creationTime:number,
+    _id: any,
 }

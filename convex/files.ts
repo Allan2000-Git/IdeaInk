@@ -3,10 +3,10 @@ import { v } from "convex/values";
 
 export const getFiles = query({
     args: { 
-        email: v.string()
+        teamId: v.any()
     },
     handler: async (ctx, args) => {
-        const file = await ctx.db.query('files').filter((q) => q.eq(q.field('email'), args.email)).collect();
+        const file = await ctx.db.query('files').filter((q) => q.eq(q.field('teamId'), args.teamId)).collect();
         return file;
     },
 });
