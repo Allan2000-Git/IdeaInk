@@ -44,7 +44,7 @@ function CreateTeam() {
                         <span className="text-gray-500/60 mt-5">You can always change this later from settings.</span>
                         <div className="w-full mt-[40px]">
                             <Label className="text-gray-500/80 text-[16px]" htmlFor="text">Team Name</Label>
-                            <Input value={teamName} onChange={e => setTeamName(e.target.value)} className="mt-3" type="text" />
+                            <Input value={teamName} onChange={e => setTeamName(e.target.value)} className="mt-3" type="text" placeholder="Team name must be of minimum 3 characters" />
                         </div>
                         <Button onClick={createTeam} disabled={teamName.length<3} className="mt-10 w-1/2 h-[45px]">Continue</Button>
                     </div>

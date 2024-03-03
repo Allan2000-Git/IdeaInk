@@ -11,13 +11,24 @@ import {
 import { Archive, Flag, Github, Lock, LogOut, Settings, Users } from 'lucide-react';
 import { Separator } from "@/components/ui/separator"
 import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-import { useConvex } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { Team } from '@/types/types';
 import Link from 'next/link';
 import { IoGrid } from "react-icons/io5";
 import { Button } from '@/components/ui/button';
-import { Progress } from "@/components/ui/progress"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"  
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 
 const topSectionOptions = [
     {
@@ -64,9 +75,11 @@ const bottomSectionOptions = [
 function SideNav() {
     const [teams, setTeams] = useState<Team[]>([]);
     const [activeTeam, setActiveTeam] = useState<Team>();
+    const [fileName, setFileName] = useState("");
 
     const {user}:any = useKindeBrowserClient();
     const convex = useConvex();
+    const createNewFile = useMutation(api.files.createFile);
 
     const getAllTeams = async () => {
         const data = await convex.query(api.teams.getTeams, {email: user?.email});
@@ -79,6 +92,27 @@ function SideNav() {
             getAllTeams();
         }
     },[user])
+
+    const handleFileCreation = (fileName:string) => {
+        createFile(fileName);   
+    }
+
+    const createFile = (fileName: string) => {
+        createNewFile({
+            fileName,
+            teamId:activeTeam?._id,
+            createdBy: user?.email,
+            archive: false,
+            document: "Default Document Name",
+            whiteboard: "Default Whiteboard Name",
+        })
+        .then(res => {
+            if(res){
+                toast(`A new ${fileName} file has been created.`);
+            }
+        })
+        .catch(err => toast(`${err.message}`));
+    }
 
     return (
         <div className="w-[20%] h-screen fixed border-r-2 px-5 pt-14 pb-5 flex flex-col">
@@ -141,6 +175,7 @@ function SideNav() {
                     <span>All Files</span>
                 </div>
             </div>
+
             {/* Bottom Section */}
             <div>
                 <div className="text-sm">
@@ -154,8 +189,32 @@ function SideNav() {
                     }
                 </div>
                 <div className="mt-7">
-                    <Button className="w-full bg-blue-500">New File</Button>
+                    <Dialog>
+                        <DialogTrigger className="w-full" asChild>
+                            <Button className="w-full bg-blue-500 hover:bg-blue-600 transition">New File</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle className="text-[16px]">Create a New File</DialogTitle>
+                                <DialogDescription>
+                                    <Input value={fileName} onChange={e => setFileName(e.target.value)} type="text" className="text-black font-medium" placeholder="File name must be of minimum 3 characters" />
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter className="sm:justify-start">
+                                <DialogClose asChild>
+                                    <Button 
+                                    onClick={() => handleFileCreation(fileName)}
+                                    disabled={fileName.length < 3} 
+                                    type="button" 
+                                    className="bg-blue-500 hover:bg-blue-600 transition">
+                                        Create
+                                    </Button>
+                                </DialogClose>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </div>
+
                 <div className="mt-7 text-sm">
                     <div className="w-full h-4 rounded-full bg-gray-200">
                         <div className="w-[20%] h-4 bg-blue-500 rounded-full">
