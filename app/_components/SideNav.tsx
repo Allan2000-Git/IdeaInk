@@ -10,10 +10,7 @@ import {
 } from "@/components/ui/popover"
 import { Archive, Flag, Github, Lock, LogOut, Settings, Users } from 'lucide-react';
 import { Separator } from "@/components/ui/separator"
-import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-import { useConvex, useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { Team } from '@/types/types';
+import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import Link from 'next/link';
 import { IoGrid } from "react-icons/io5";
 import { Button } from '@/components/ui/button';
@@ -28,7 +25,8 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"  
 import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
+import { useFileContext } from '../_context/FileContext';
+import { Team } from '@/types/types';
 
 const topSectionOptions = [
     {
@@ -73,81 +71,38 @@ const bottomSectionOptions = [
 ]
 
 function SideNav() {
-    const [teams, setTeams] = useState<Team[]>([]);
-    const [activeTeam, setActiveTeam] = useState<Team>();
-    const [fileName, setFileName] = useState("");
-    const [files, setFiles] = useState<File[]>([]);
-
-    const {user}:any = useKindeBrowserClient();
-    const convex = useConvex();
-    const createNewFile = useMutation(api.files.createFile);
-
-    // Get all the teams
-    const getAllTeams = async () => {
-        const data = await convex.query(api.teams.getTeams, {email: user?.email});
-        setTeams(data);
-        setActiveTeam(data[0]);
-    }
+    const {user, activeTeam, getAllTeams, handleFileCreation, getAllFiles, teams, setActiveTeam, files, setFileName, fileName}:any = useFileContext();
 
     useEffect(() => {
         if(user){
             getAllTeams();
         }
-    },[user])
-
-    // Create New File
-    const handleFileCreation = (fileName:string) => {
-        createFile(fileName);   
-    }
-
-    const createFile = (fileName: string) => {
-        createNewFile({
-            fileName,
-            teamId:activeTeam?._id,
-            createdBy: user?.email,
-            archive: false,
-            document: "Default Document Name",
-            whiteboard: "Default Whiteboard Name",
-        })
-        .then(res => {
-            if(res){
-                getAllFiles();
-                toast(`A new ${fileName} file has been created.`);
-            }
-        })
-        .catch(err => toast(`${err.message}`));
-    }
-
-    // Get all files
-    const getAllFiles = async () => {
-        const data = await convex.query(api.files.getFiles, {teamId: activeTeam?._id});
-        setFiles(data);
-    }
+    },[user]);
 
     useEffect(() => {
         if(activeTeam){
             getAllFiles();
         }
-    },[activeTeam])
+    },[activeTeam]);
 
     return (
-        <div className="w-[20%] h-screen fixed border-r-2 px-5 pt-14 pb-5 flex flex-col">
+        <div className="w-[20%] h-screen fixed border-r-2 px-5 pt-14 pb-5 flex flex-col col-span-1">
             {/* Top Section */}
             <div className="flex-1">
                 <Popover>
                     <PopoverTrigger className="w-full">
-                        <div className="flex items-center gap-3 bg-gray-200/50 cursor-pointer rounded-md px-3 py-3">
+                        <div className="flex items-center gap-3 cursor-pointer rounded-md px-3 py-3 bg-gray-100">
                             <Image src="/ideaink-eraser.png" alt="IdeaInk Logo" width={24} height={24} />
                             <div className="flex items-center justify-between flex-1 font-bold">
-                                <span>{activeTeam?.teamName}</span>
-                                <IoMdArrowDropdown />
+                                <span className="text-lg">{activeTeam?.teamName}</span>
+                                <IoMdArrowDropdown size={20} />
                             </div>
                         </div>
                     </PopoverTrigger>
                     <PopoverContent className="p-0 mt-2 w-[260px] text-sm">
                         <div className="flex flex-col gap-2 px-3 py-2">
                             {
-                                teams.map((team) => (
+                                teams.map((team:Team) => (
                                     <span 
                                     onClick={() => setActiveTeam(team)}
                                     className={`${activeTeam?._id === team?._id ? "bg-blue-500 text-white" : ""}  px-3 py-2.5 rounded-md font-medium cursor-pointer`}>

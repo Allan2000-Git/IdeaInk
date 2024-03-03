@@ -21,6 +21,7 @@ export type File = {
     fileName:string | null,
     teamId:any,
     whiteboard:string | null,
+    userPicture:string,
     _creationTime:number,
     _id: any,
 }

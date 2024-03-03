@@ -1,27 +1,12 @@
 "use client"
 
-import { api } from '@/convex/_generated/api';
-import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
-import { useConvex, useMutation } from 'convex/react';
+import DashboardContent from '@/app/_components/DashboardContent';
+import { useFileContext } from '@/app/_context/FileContext';
 import React, { useEffect } from 'react'
 
 function Dashboard() {
-    const {user, isLoading}: any = useKindeBrowserClient();
-    const createUser = useMutation(api.user.createUser);
-
-    const convex = useConvex();
-    const checkIfUserExists = async() => {
-        const data = await convex.query(api.user.getUser, {email: user.email});
-        if(!data.length){
-            createUser({
-                name: user.given_name,
-                email: user.email,
-                picture: user.picture
-            })
-            .then(res => console.log("User created: ", res))
-        }
-    }
-
+    const {user, checkIfUserExists, isLoading}:any = useFileContext();
+    
     useEffect(() => {
         if(user && !isLoading){
             checkIfUserExists();
@@ -29,8 +14,8 @@ function Dashboard() {
     }, [user])
     
     return (
-        <div>
-            Dashboard
+        <div className="py-14 px-10">
+            <DashboardContent />
         </div>
     )
 }

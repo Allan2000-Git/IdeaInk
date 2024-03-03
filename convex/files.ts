@@ -6,7 +6,7 @@ export const getFiles = query({
         teamId: v.any()
     },
     handler: async (ctx, args) => {
-        const file = await ctx.db.query('files').filter((q) => q.eq(q.field('teamId'), args.teamId)).collect();
+        const file = await ctx.db.query('files').filter((q) => q.eq(q.field('teamId'), args.teamId)).order("desc").collect();
         return file;
     },
 });
@@ -19,9 +19,10 @@ export const createFile = mutation({
         archive: v.boolean(),
         document: v.string(),
         whiteboard: v.string(),
+        userPicture: v.string()
     },
     handler: async (ctx, args) => {
-        const {fileName, teamId, createdBy, archive, document, whiteboard} = args;
-        return await ctx.db.insert('files', {fileName, teamId, createdBy, archive, document, whiteboard});
+        const {fileName, teamId, createdBy, archive, document, whiteboard, userPicture} = args;
+        return await ctx.db.insert('files', {fileName, teamId, createdBy, archive, document, whiteboard, userPicture});
     }
 })

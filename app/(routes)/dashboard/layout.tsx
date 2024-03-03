@@ -1,6 +1,7 @@
 "use client"
 
 import SideNav from '@/app/_components/SideNav';
+import { FileContextProvider } from '@/app/_context/FileContext';
 import { api } from '@/convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useConvex } from 'convex/react';
@@ -30,14 +31,14 @@ function DashboardLayout({
 
     return (
         <div>
-            <div className="grid grid-cols-4">
-                <div>
+            <FileContextProvider>
+                <div className="grid grid-cols-4">
                     <SideNav />
+                    <div className="col-span-4 ml-[20%]">
+                        {children}
+                    </div>
                 </div>
-                <div className="grid-cols-3">
-                    {children}
-                </div>
-            </div>
+            </FileContextProvider>
         </div>
     )
 }
