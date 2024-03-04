@@ -11,6 +11,16 @@ export const getFiles = query({
     },
 });
 
+export const getFile = query({
+    args: { 
+        _id: v.id('files')
+    },
+    handler: async (ctx, args) => {
+        const file = await ctx.db.get(args._id);
+        return file;
+    },
+});
+
 export const createFile = mutation({
     args:{
         fileName: v.string(),

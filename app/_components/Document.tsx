@@ -12,6 +12,7 @@ import Paragraph from "@editorjs/paragraph";
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
+import { File } from '@/types/ideaink';
 
 const documentData = {
     "time": 1550476186479,
@@ -20,15 +21,8 @@ const documentData = {
             "id": "oUq2g_tl8y",
             "type": "header",
             "data": {
-                "text": "IdeaInk - Your Digital Ideation Canvas",
+                "text": "IdeaInk",
                 "level": 2
-            }
-        },
-        {
-            "id": "zbGZFPM-iI",
-            "type": "paragraph",
-            "data": {
-                "text": "Sketch, brainstorm, collaborate. Turn inspiration into action!"
             }
         },
         {
@@ -55,7 +49,13 @@ const documentData = {
     "version": "2.8.1"
 }
 
-function Document({onSaveTrigger, fileId}:any) {
+interface IDocumentProps {
+    onSaveTrigger: any,
+    fileId: any,
+    file: File|any
+}
+
+function Document({onSaveTrigger, fileId, file}:IDocumentProps) {
     const editorRef = useRef<EditorJS>();
     const [document, setDocument] = useState(documentData);
 
@@ -75,14 +75,16 @@ function Document({onSaveTrigger, fileId}:any) {
                 quote: Quote,
                 paragraph: Paragraph,
             }, 
-            data: document
+            data: file ? JSON.parse(file.document) : document
         });
         editorRef.current = editor
     }
 
     useEffect(() => {
-        initializeEditor();
-    },[]);
+        if(file){
+            initializeEditor();
+        }
+    },[file]);
 
     // Save document - check the editor.js doc https://editorjs.io/saving-data/
     const handleSaveDocument = () => {

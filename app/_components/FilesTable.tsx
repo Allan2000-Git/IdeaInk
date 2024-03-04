@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"  
 import { Archive, MoreHorizontal, Trash } from 'lucide-react'
 import { useFileContext } from '../_context/FileContext';
-import { File } from '@/types/types';
+import { File } from '@/types/ideaink';
 import { formatDate } from '@/utils/formatDate';
 import Image from 'next/image';
 import {

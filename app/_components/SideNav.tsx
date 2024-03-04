@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/dialog"  
 import { Input } from '@/components/ui/input';
 import { useFileContext } from '../_context/FileContext';
-import { Team } from '@/types/types';
+import { Team } from '@/types/ideaink';
 
 const topSectionOptions = [
     {

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { KindeUser } from '@/types/types'
+import { KindeUser } from '@/types/ideaink'
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs'
 import { Search, Send } from 'lucide-react'
 import Image from 'next/image'

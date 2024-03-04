@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { api } from '@/convex/_generated/api';
 import { useConvex, useMutation } from 'convex/react';
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { Team } from '@/types/types';
+import { Team } from '@/types/ideaink';
 import { toast } from 'sonner';
 
 export const FileContext = createContext({});
