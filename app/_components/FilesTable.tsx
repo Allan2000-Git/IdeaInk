@@ -21,7 +21,7 @@ import {
 import { useRouter } from 'next/navigation';
 
 function FilesTable() {
-    const {files, user}:any = useFileContext();
+    const {files}:any = useFileContext();
     const router = useRouter();
 
     return (

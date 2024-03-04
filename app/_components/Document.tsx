@@ -75,7 +75,7 @@ function Document({onSaveTrigger, fileId, file}:IDocumentProps) {
                 quote: Quote,
                 paragraph: Paragraph,
             }, 
-            data: file ? JSON.parse(file.document) : document
+            data: file.document ? JSON.parse(file.document) : document
         });
         editorRef.current = editor
     }
