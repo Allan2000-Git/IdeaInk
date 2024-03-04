@@ -9,7 +9,7 @@ function HeroSection() {
     const {user} = useKindeBrowserClient();
 
     return (
-        <section className="bg-black/100 text-white h-screen">
+        <section className="bg-black/100 text-white">
             <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
                 <div className="mx-auto max-w-5xl text-center">
                     <div className="space-y-6">

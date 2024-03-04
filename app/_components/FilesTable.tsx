@@ -18,9 +18,11 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useRouter } from 'next/navigation';
 
 function FilesTable() {
     const {files, user}:any = useFileContext();
+    const router = useRouter();
 
     return (
         <>
@@ -38,7 +40,10 @@ function FilesTable() {
                     <TableBody>
                         {
                             files.map((file:File) => (
-                                <TableRow key={file._id}>
+                                <TableRow 
+                                onClick={() => router.push(`/workspace/${file._id}`)} 
+                                className="cursor-pointer"
+                                key={file._id}>
                                     <TableCell>{file.fileName}</TableCell>
                                     <TableCell>{file.createdBy}</TableCell>
                                     <TableCell>{formatDate(file._creationTime)}</TableCell>
