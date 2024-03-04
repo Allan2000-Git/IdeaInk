@@ -1,5 +1,6 @@
 "use client"
 
+import Canvas from '@/app/_components/Canvas';
 import WorkSpaceHeader from '@/app/_components/WorkSpaceHeader';
 import { Separator } from '@/components/ui/separator';
 import { api } from '@/convex/_generated/api';
@@ -10,7 +11,8 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 // 'const DocumentNoSSR' is a dynamically imported version of the 'Document' component, and it will be rendered only on the client side, bypassing server-side rendering
-const DocumentNoSSR = dynamic(() => import("../../../_components/Document"), { ssr: false });
+const DocumentNoSSR = dynamic(async () => import("../../../_components/Document"), { ssr: false });
+const CanvasWrapper = dynamic(async () => import("../../../_components/Canvas"), { ssr: false });
 
 function WorkSpace() {
     const {fileId}:any = useParams();
@@ -34,15 +36,14 @@ function WorkSpace() {
         <div>
             <WorkSpaceHeader onSave={() => setTriggerSave(!triggerSave)} />
             <Separator />
-            <div className="grid grid-cols-1 md:grid-cols-2 h-screen py-5">
+            <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Document */}
-                <div className="">
+                <div className="border-r-2">
                     <DocumentNoSSR onSaveTrigger={triggerSave} fileId={fileId} file={file} />
                 </div>
-
                 {/* Canvas */}
-                <div className="bg-logo_primary/70">
-
+                <div className="">
+                    <CanvasWrapper />
                 </div>
             </div>
         </div>

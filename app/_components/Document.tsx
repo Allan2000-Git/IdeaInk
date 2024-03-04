@@ -84,7 +84,7 @@ function Document({onSaveTrigger, fileId, file}:IDocumentProps) {
         if(file){
             initializeEditor();
         }
-    },[file]);
+    },[file, fileId]);
 
     // Save document - check the editor.js doc https://editorjs.io/saving-data/
     const handleSaveDocument = () => {
@@ -94,11 +94,11 @@ function Document({onSaveTrigger, fileId, file}:IDocumentProps) {
                     _id: fileId,
                     document: JSON.stringify(outputData)
                 })
-                .then((res) => {
+                .then(() => {
                     toast.success('Document saved successfully')
                 });
             })
-            .catch((error) => {
+            .catch(() => {
                 toast.error('Error occurred while saving document')
             });
         }
@@ -111,7 +111,7 @@ function Document({onSaveTrigger, fileId, file}:IDocumentProps) {
     },[onSaveTrigger]);
 
     return (
-        <div>
+        <div className="px-2">
             <div id="editorjs">
             </div>
         </div>
