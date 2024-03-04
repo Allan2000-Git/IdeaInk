@@ -9,6 +9,9 @@ import SimpleImage from '@editorjs/simple-image';
 import Link from '@editorjs/link';
 import Quote from '@editorjs/quote';
 import Paragraph from "@editorjs/paragraph";
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { toast } from 'sonner';
 
 const documentData = {
     "time": 1550476186479,
@@ -52,9 +55,12 @@ const documentData = {
     "version": "2.8.1"
 }
 
-function Document() {
+function Document({onSaveTrigger, fileId}:any) {
     const editorRef = useRef<EditorJS>();
     const [document, setDocument] = useState(documentData);
+
+    // mutation to update document
+    const updateDocument = useMutation(api.files.updateDocument);
 
     const initializeEditor = () => {
         const editor = new EditorJS({
@@ -77,6 +83,30 @@ function Document() {
     useEffect(() => {
         initializeEditor();
     },[]);
+
+    // Save document - check the editor.js doc https://editorjs.io/saving-data/
+    const handleSaveDocument = () => {
+        if(editorRef.current){
+            editorRef.current.save().then((outputData) => {
+                updateDocument({
+                    _id: fileId,
+                    document: JSON.stringify(outputData)
+                })
+                .then((res) => {
+                    toast.success('Document saved successfully')
+                });
+            })
+            .catch((error) => {
+                toast.error('Error occurred while saving document')
+            });
+        }
+    }
+
+    useEffect(() => {
+        if(onSaveTrigger){
+            handleSaveDocument();
+        }
+    },[onSaveTrigger]);
 
     return (
         <div>

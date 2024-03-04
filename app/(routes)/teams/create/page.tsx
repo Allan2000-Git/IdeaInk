@@ -26,9 +26,12 @@ function CreateTeam() {
         .then(res => {
             if(res){
                 router.push('/dashboard');
-                toast(`A new ${teamName} team has been created.`);
+                toast.success(`A new ${teamName} team has been created.`);
             }
         })
+        .catch((error) => {
+            toast.error('Error occurred while creating team')
+        });
     }
 
     return (

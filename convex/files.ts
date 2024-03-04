@@ -23,6 +23,19 @@ export const createFile = mutation({
     },
     handler: async (ctx, args) => {
         const {fileName, teamId, createdBy, archive, document, whiteboard, userPicture} = args;
-        return await ctx.db.insert('files', {fileName, teamId, createdBy, archive, document, whiteboard, userPicture});
+        const newFile = await ctx.db.insert('files', {fileName, teamId, createdBy, archive, document, whiteboard, userPicture});
+        return newFile;
+    }
+})
+
+export const updateDocument = mutation({
+    args:{
+        _id: v.id('files'),
+        document: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const {_id, document} = args;
+        const updatedDocument = await ctx.db.patch(args._id, {document});
+        return updatedDocument;
     }
 })

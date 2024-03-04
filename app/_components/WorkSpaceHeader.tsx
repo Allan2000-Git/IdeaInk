@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
-import { Link } from 'lucide-react'
+import { Link, Save } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
-function WorkSpaceHeader() {
+function WorkSpaceHeader({onSave}:any) {
     return (
         <div className="flex items-center justify-between px-5 py-3">
             <div className="flex items-center gap-3">
@@ -16,6 +16,10 @@ function WorkSpaceHeader() {
                 <Button variant="ghost">Canvas</Button>
             </div>
             <div className="flex items-center gap-3">
+                <Button onClick={()=>onSave()} className="flex items-center bg-red-500 hover:bg-red-600 gap-2">
+                    <Save size={14} />
+                    Save
+                </Button>
                 <Button variant="outline">Join Slack Community</Button>
                 <Button className="flex items-center bg-blue-500 hover:bg-blue-600 gap-2">
                     <Link size={14} />
