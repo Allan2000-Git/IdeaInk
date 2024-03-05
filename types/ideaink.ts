@@ -11,7 +11,7 @@ export type Team = {
     createdBy: string | null,
     teamName:string | null,
     _creationTime:number,
-    _id: string,
+    _id: any,
 }
 
 export type File = {
@@ -20,7 +20,7 @@ export type File = {
     document: string | null,
     fileName:string | null,
     teamId:any,
-    whiteboard:string,
+    whiteboard:any,
     userPicture:string,
     _creationTime:number,
     _id: string,

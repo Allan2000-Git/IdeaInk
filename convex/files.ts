@@ -24,7 +24,7 @@ export const getFile = query({
 export const createFile = mutation({
     args:{
         fileName: v.string(),
-        teamId: v.string(),
+        teamId: v.any(),
         createdBy: v.string(),
         archive: v.boolean(),
         document: v.string(),
@@ -59,5 +59,16 @@ export const updateWhiteboard = mutation({
         const {_id, whiteboard} = args;
         const updatedDocument = await ctx.db.patch(args._id, {whiteboard});
         return updatedDocument;
+    }
+})
+
+export const deleteFile = mutation({
+    args:{
+        fileId: v.id('files'),
+    },
+    handler: async (ctx, args) => {
+        const {fileId} = args;
+        const deletedFile = await ctx.db.delete(fileId);
+        return deletedFile;
     }
 })

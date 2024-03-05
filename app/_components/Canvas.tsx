@@ -41,7 +41,7 @@ const ExcalidrawWrapper = ({onSaveTrigger, fileId, file}: ICanvasProps) => {
         <div className="h-screen w-full overflow-auto">  
             <Excalidraw
             initialData={{
-                elements: file.whiteboard ? JSON.parse(file.whiteboard) : [],
+                elements: file && file.whiteboard ? JSON.parse(file.whiteboard) : [],
                 scrollToContent: true
             }}
             onChange={(excalidrawElements, appState, files) => setExcalidrawData(excalidrawElements)}
