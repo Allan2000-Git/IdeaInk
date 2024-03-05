@@ -27,6 +27,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { useFileContext } from '../_context/FileContext';
 import { Team } from '@/types/ideaink';
+import { MAX_FREE_FILES_PLAN } from '@/utils/constants';
+import Pricing from './Pricing';
 
 const topSectionOptions = [
     {
@@ -165,7 +167,7 @@ function SideNav() {
                             <Button className="w-full bg-blue-500 hover:bg-blue-600 transition">New File</Button>
                         </DialogTrigger>
                         {
-                            files.length < 5 ?
+                            files.length < MAX_FREE_FILES_PLAN ?
                             (
                                 <DialogContent>
                                     <DialogHeader>
@@ -186,15 +188,18 @@ function SideNav() {
                                         </DialogClose>
                                     </DialogFooter>
                                 </DialogContent>
-                            ):(
-                                <DialogContent>
+                            ): <DialogContent className="max-w-3xl">
                                     <DialogHeader>
+                                        <DialogTitle className="text-[16px]">Upgrade your Plan</DialogTitle>
                                         <DialogDescription>
-                                            You have already generated 5 files. Please upgrade to use unlimited files.
+                                            <Pricing />
                                         </DialogDescription>
                                     </DialogHeader>
+                                    <DialogFooter className="sm:justify-start">
+                                        <DialogClose asChild>
+                                        </DialogClose>
+                                    </DialogFooter>
                                 </DialogContent>
-                            )
                         }
                     </Dialog>
                 </div>
