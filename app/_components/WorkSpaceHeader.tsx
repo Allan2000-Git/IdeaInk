@@ -1,14 +1,20 @@
 import { Button } from '@/components/ui/button'
+import { File } from '@/types/ideaink'
 import { Link, Save } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
-function WorkSpaceHeader({onSave}:any) {
+interface IWorkSpaceHeaderProps {
+    onSave: any,
+    file: File
+}
+
+function WorkSpaceHeader({onSave, file}:IWorkSpaceHeaderProps) {
     return (
         <div className="flex items-center justify-between px-5 py-3">
             <div className="flex items-center gap-3">
                 <Image src="/ideaink-eraser.png" alt="IdeaInk Logo" width={35} height={35} />
-                <h1 className="text-lg font-semibold">Test File 1</h1>
+                <h1 className="text-lg font-semibold">{file?.fileName}</h1>
             </div>
             <div className="border-[1.5px] rounded-md p-1">
                 <Button variant="ghost">Document</Button>

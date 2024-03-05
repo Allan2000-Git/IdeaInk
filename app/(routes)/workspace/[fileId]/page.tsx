@@ -34,7 +34,7 @@ function WorkSpace() {
 
     return (
         <div>
-            <WorkSpaceHeader onSave={() => setTriggerSave(!triggerSave)} />
+            <WorkSpaceHeader file={file} onSave={() => setTriggerSave(!triggerSave)} />
             <Separator />
             <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Document */}
@@ -43,7 +43,7 @@ function WorkSpace() {
                 </div>
                 {/* Canvas */}
                 <div className="">
-                    <CanvasWrapper />
+                    <CanvasWrapper onSaveTrigger={triggerSave} fileId={fileId} file={file} />
                 </div>
             </div>
         </div>

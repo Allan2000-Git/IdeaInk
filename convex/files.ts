@@ -49,3 +49,15 @@ export const updateDocument = mutation({
         return updatedDocument;
     }
 })
+
+export const updateWhiteboard = mutation({
+    args:{
+        _id: v.id('files'),
+        whiteboard: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const {_id, whiteboard} = args;
+        const updatedDocument = await ctx.db.patch(args._id, {whiteboard});
+        return updatedDocument;
+    }
+})

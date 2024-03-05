@@ -50,9 +50,9 @@ const documentData = {
 }
 
 interface IDocumentProps {
-    onSaveTrigger: any,
+    onSaveTrigger: boolean,
     fileId: any,
-    file: File|any
+    file: File
 }
 
 function Document({onSaveTrigger, fileId, file}:IDocumentProps) {
