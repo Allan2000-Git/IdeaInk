@@ -29,6 +29,7 @@ import { useFileContext } from '../_context/FileContext';
 import { Team } from '@/types/ideaink';
 import { MAX_FREE_FILES_PLAN } from '@/utils/constants';
 import Pricing from './Pricing';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const topSectionOptions = [
     {
@@ -92,21 +93,26 @@ function SideNav() {
             {/* Top Section */}
             <div className="flex-1">
                 <Popover>
-                    <PopoverTrigger className="w-full">
-                        <div className="flex items-center gap-3 cursor-pointer rounded-md px-3 py-3 bg-gray-100">
-                            <Image src="/ideaink-eraser.png" alt="IdeaInk Logo" width={24} height={24} />
-                            <div className="flex items-center justify-between flex-1 font-bold">
-                                <span className="text-lg">{activeTeam?.teamName}</span>
-                                <IoMdArrowDropdown size={20} />
+                    {
+                        user ? 
+                        <PopoverTrigger className="w-full">
+                            <div className="flex items-center gap-3 cursor-pointer rounded-md px-3 py-3 bg-gray-100">
+                                <Image src="/ideaink-eraser.png" alt="IdeaInk Logo" width={24} height={24} />
+                                <div className="flex items-center justify-between flex-1 font-bold">
+                                    <span className="text-lg">{activeTeam?.teamName}</span>
+                                    <IoMdArrowDropdown size={20} />
+                                </div>
                             </div>
-                        </div>
-                    </PopoverTrigger>
+                        </PopoverTrigger> :
+                        <Skeleton className="h-[40px] w-full" />
+                    }
                     <PopoverContent className="p-0 mt-2 w-[260px] text-sm">
                         <div className="flex flex-col gap-2 px-3 py-2">
                             {
                                 teams.map((team:Team) => (
                                     <span 
                                     onClick={() => setActiveTeam(team)}
+                                    key={team._id}
                                     className={`${activeTeam?._id === team?._id ? "bg-blue-500 text-white" : ""}  px-3 py-2.5 rounded-md font-medium cursor-pointer`}>
                                         {team?.teamName}
                                     </span>
