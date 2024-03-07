@@ -4,6 +4,7 @@ import { useConvex, useMutation } from 'convex/react';
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Team } from '@/types/ideaink';
 import { toast } from 'sonner';
+import { sendEmailToUser } from "@/lib/nodemailer";
 
 export const FileContext = createContext({});
 
@@ -17,17 +18,20 @@ export const FileContextProvider = ({children}:any) => {
     const convex = useConvex();
     const createNewFile = useMutation(api.files.createFile);
 
-    const checkIfUserExists = async() => {
-        const data = await convex.query(api.user.getUser, {email: user.email});
-        if(!data.length){
-            createUser({
-                name: user.given_name,
-                email: user.email,
-                picture: user.picture
-            })
-            .then(res => console.log("User created: ", res))
+    const checkIfUserExists = async () => {
+        try {
+            const data = await convex.query(api.user.getUser, { email: user.email });
+            if (!data.length) {
+                await createUser({
+                    name: user.given_name,
+                    email: user.email,
+                    picture: user.picture
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
         }
-    }
+    };
 
     // Get all the teams
     const getAllTeams = async () => {

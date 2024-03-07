@@ -26,7 +26,7 @@ import { sendEmailToUser } from '@/lib/nodemailer';
 // }
 export async function POST() {
     try {
-        await sendEmailToUser();
+        await sendEmailToUser({firstName: 'John', lastName: 'Smith'});
         return NextResponse.json({ message: "Email sent successfully" });
     } catch (error) {
         console.error("Error sending email:", error);

@@ -72,3 +72,15 @@ export const deleteFile = mutation({
         return deletedFile;
     }
 })
+
+export const archiveFile = mutation({
+    args:{
+        fileId: v.id('files'),
+        archive: v.boolean(),
+    },
+    handler: async (ctx, args) => {
+        const {fileId, archive} = args;
+        const archivedFile = await ctx.db.patch(fileId, {archive});
+        return archivedFile;
+    }
+})

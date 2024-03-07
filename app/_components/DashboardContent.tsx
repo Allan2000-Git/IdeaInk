@@ -10,6 +10,21 @@ import FilesTable from './FilesTable'
 function DashboardContent() {
     const {user}:any = useKindeBrowserClient();
 
+    const sendInvite = async () => {
+        try {
+
+            const response = await fetch('/api/send', {
+                method: 'post',
+            });
+
+            if (!response.ok) {
+                throw new Error(`response status: ${response.status}`);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     return (
         <>
             <div className="flex items-center w-full justify-between mt-5">
@@ -26,7 +41,7 @@ function DashboardContent() {
                         <Input className="outline-none border-none flex-1 focus:border-white active:outline-white" type="text" placeholder="Search" />
                     </div>
                     <Image src={user?.picture} alt={`${user?.given_name} profile pciture`} width={40} height={40} className="rounded-full" />
-                    <Button className="flex items-center bg-blue-500 hover:bg-blue-600 gap-2">
+                    <Button onClick={sendInvite} className="flex items-center bg-blue-500 hover:bg-blue-600 gap-2">
                         <Send size={14} />
                         Invite
                     </Button>

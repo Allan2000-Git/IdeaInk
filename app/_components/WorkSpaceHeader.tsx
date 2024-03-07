@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { sendEmailToUser } from '@/lib/nodemailer'
 import { File } from '@/types/ideaink'
 import { Link, Save } from 'lucide-react'
 import Image from 'next/image'
@@ -10,6 +11,8 @@ interface IWorkSpaceHeaderProps {
 }
 
 function WorkSpaceHeader({onSave, file}:IWorkSpaceHeaderProps) {
+
+
     return (
         <div className="flex items-center justify-between px-5 py-3">
             <div className="flex items-center gap-3">
